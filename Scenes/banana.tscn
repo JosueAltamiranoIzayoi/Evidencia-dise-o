@@ -1,0 +1,70 @@
+[gd_scene load_steps=8 format=3 uid="uid://dto1ejk61piub"]
+
+[ext_resource type="Script" path="res://Scripts/banana.gd" id="1_1pw6e"]
+[ext_resource type="Texture2D" uid="uid://dvk6gql1mnjc8" path="res://Rocky Roads/Rocky Roads/Objects/gem.png" id="1_eu260"]
+[ext_resource type="AudioStream" uid="uid://ce65kgiribriw" path="res://MusicaYSonido/Sonidos/confirmation_003.ogg" id="3_dl31e"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_xk228"]
+size = Vector2(18, 16)
+
+[sub_resource type="Animation" id="Animation_qnsb3"]
+resource_name = "Banana_Rotate"
+length = 2.2
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.433333, 0.866667, 1.3, 1.73333),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4]
+}
+
+[sub_resource type="Animation" id="Animation_nf8l8"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_bgwrh"]
+_data = {
+"Banana_Rotate": SubResource("Animation_qnsb3"),
+"RESET": SubResource("Animation_nf8l8")
+}
+
+[node name="Banana" type="Node2D"]
+script = ExtResource("1_1pw6e")
+
+[node name="Banana2D" type="Area2D" parent="."]
+
+[node name="Sprite2D" type="Sprite2D" parent="Banana2D"]
+rotation = 0.00331795
+texture = ExtResource("1_eu260")
+hframes = 5
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Banana2D"]
+shape = SubResource("RectangleShape2D_xk228")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Banana2D"]
+libraries = {
+"": SubResource("AnimationLibrary_bgwrh")
+}
+autoplay = "Banana_Rotate"
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="Banana2D"]
+stream = ExtResource("3_dl31e")
+
+[connection signal="body_entered" from="Banana2D" to="." method="_on_banana_2d_body_entered"]
